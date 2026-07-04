@@ -1,7 +1,23 @@
-FROM eclipse-temurin:17-jdk
+# Etapa 1 - Build
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY pom.xml .
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# stage 2 - Runtime
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
