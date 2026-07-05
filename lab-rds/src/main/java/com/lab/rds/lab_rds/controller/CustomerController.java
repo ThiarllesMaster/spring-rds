@@ -3,6 +3,7 @@ package com.lab.rds.lab_rds.controller;
 import com.lab.rds.lab_rds.entity.Customer;
 import com.lab.rds.lab_rds.repository.CustomerRepository;
 import com.lab.rds.lab_rds.service.CustomerService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,5 +26,10 @@ public class CustomerController {
     @PostMapping
     public Customer saveCustomer(@RequestBody Customer customer) {
         return this.customerService.saveCustomer(customer);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> findCustomer(@PathVariable Long id) {
+        return ResponseEntity.ok(customerService.findCustomer(id));
     }
 }

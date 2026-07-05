@@ -1,33 +1,33 @@
 #!/bin/bash
-
 set -e
 
-echo "🔄 Atualizando sistema..."
-sudo apt update -y && sudo apt upgrade -y
+echo "🔄 Updating system..."
+apt update -y
 
-echo "📦 Instalando dependências básicas..."
-sudo apt install -y git curl
+echo "📦 Installing base packages..."
+apt install -y ca-certificates curl git docker.io
 
-echo "🐳 Instalando Docker..."
-sudo apt install -y docker.io
+echo "🐳 Starting Docker..."
+systemctl enable docker
+systemctl start docker
 
-sudo systemctl enable docker
-sudo systemctl start docker
+echo "👤 Adding ubuntu user to docker group..."
+usermod -aG docker ubuntu
 
-echo "👤 Configurando usuário docker..."
-sudo usermod -aG docker ubuntu
+echo "🐙 Installing Docker Compose (v2)..."
+mkdir -p /usr/local/lib/docker/cli-plugins/
 
-echo "🐙 Instalando Docker Compose (plugin oficial)..."
-sudo mkdir -p /usr/local/lib/docker/cli-plugins/
-
-sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 \
+curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 \
 -o /usr/local/lib/docker/cli-plugins/docker-compose
 
-sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
-echo "✅ Verificando versões..."
-docker --version
-docker compose version
+echo "✅ Verifying installation..."
+docker --version || true
+docker compose version || true
+
+echo "🎉 UserData finished successfully"
+#The script takes one time to be finished at instance EC2
 
 echo "📥 Clonando projeto..."
 cd /home/ubuntu

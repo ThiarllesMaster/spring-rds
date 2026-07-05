@@ -18,19 +18,26 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    //@Cacheable(value = "customers")
+    @Cacheable(value = "customers")
     public List<Customer> findAllCustomers() {
         System.out.println("Buscando no RDS...");
         return customerRepository.findAll();
     }
 
-    //@CachePut(value = "customers", key = "#customer.id")
+    @CachePut(value = "customers", key = "#customer.id")
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 
-    //@CacheEvict(value = "customers", key = "#id")
+    @CacheEvict(value = "customers", key = "#id")
     public void delete(Long id) {
         customerRepository.deleteById(id);
+    }
+
+    @Cacheable(value = "customers", key = "#id")
+    public Customer findCustomer(Long id) {
+        System.out.println("Consultando o banco ...");
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 }
