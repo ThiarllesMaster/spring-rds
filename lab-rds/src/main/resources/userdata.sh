@@ -36,9 +36,10 @@ git clone https://github.com/SEU_USUARIO/SEU_REPO.git
 cd SEU_REPO
 
 echo "🔐 Exportando variáveis de ambiente..."
-export DB_URL="jdbc:mysql://database-1.cp2uy0osedto.eu-west-1.rds.amazonaws.com:3306/lab-rds"
+export DB_URL="jdbc:mysql://database-1.cp2uy0osedto.eu-west-1.rds.amazonaws.com:3306/lab_rds"
 export DB_USER="admin"
 export DB_PASSWORD="vnc(0800)"
+export ELASTIC_CACHE_URL="redis-dev-tld3ou.serverless.euw1.cache.amazonaws.com"
 
 echo "🚀 Subindo aplicação com Docker Compose..."
 docker compose up --build -d
